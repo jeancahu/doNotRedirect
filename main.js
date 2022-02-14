@@ -39,7 +39,7 @@ script_sources.filter(el => el.match(/^\/\//)).forEach(
 (async () => {
     const delay = ms => new Promise(res => setTimeout(res, ms));
     // Await til the scripts place the redirection layer
-    await delay(2000);
+    await delay(500);
     Array.from(document.body.getElementsByTagName("DIV")).filter(
         element => element.style.position === "fixed"
     ).forEach(element => element.style.zIndex = -1000);
@@ -119,3 +119,7 @@ Array.from(wrapper.getElementsByTagName("A")).filter(el => String(el.getAttribut
 
 // Removes right padding
 wrapper.getElementsByClassName("Body")[0].firstElementChild.firstElementChild.classList.remove("CpCn");
+
+document.body.getElementsByTagName("NOSCRIPT")[0].remove();
+document.getElementById("fb-root").remove();
+document.body.prepend(wrapper.firstElementChild);
