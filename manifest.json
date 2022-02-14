@@ -1,0 +1,15 @@
+{
+
+    "manifest_version": 2,
+    "name": "DoNotRedirect",
+    "version": "1.0",
+
+    "description": "Bloquea las redirecciones de animeflv.com",
+
+    "content_scripts": [
+        {
+            "matches": ["*://*.animeflv.net/*"],
+            "js": ["main.js"]
+        }
+    ]
+}
