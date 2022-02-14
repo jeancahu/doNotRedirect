@@ -39,7 +39,7 @@ script_sources.filter(el => el.match(/^\/\//)).forEach(
 (async () => {
     const delay = ms => new Promise(res => setTimeout(res, ms));
     // Await til the scripts place the redirection layer
-    await delay(500);
+    await delay(2000);
     Array.from(document.body.getElementsByTagName("DIV")).filter(
         element => element.style.position === "fixed"
     ).forEach(element => element.style.zIndex = -1000);
@@ -53,32 +53,58 @@ script_sources.filter(el => el.match(/^\/\//)).forEach(
 Array.from(document.body.getElementsByTagName("A")).filter(
     element => element.rel === "nofollow").forEach(element => element.remove());
 
-console.log("page clean ready");
+console.log("Page remove social networks and invisible layers done.");
+
 let wrapper = document.body.getElementsByClassName("Wrapper")[0];
-let iframes = wrapper.getElementsByTagName("IFRAME");
 
+// Run if the page is the video viewport
+if (!window.location.href.includes("ver")){
+    // Replace items in Wrapper
+    let new_anime_list = document.createElement("ul");
+    new_anime_list.style.display = "grid";
+    new_anime_list.style.gridColumnGap = "5px";
+    new_anime_list.style.gridRowGap = "5px";
+    new_anime_list.style.gridTemplateRows = "max-content";
+    new_anime_list.style.gridTemplateColumns = "auto auto auto auto auto";
+    new_anime_list.style.margin = "20px 20px";
 
-let video_iframes = Array.from(iframes);
+    ["ListEpisodios","AX"].forEach(sclass => new_anime_list.classList.add(sclass));
+    document.body.prepend(new_anime_list);
+
+    let old_list = Array.from(wrapper.getElementsByClassName("ListEpisodios"));
+    if (old_list.length){
+        Array.from(old_list[0].getElementsByTagName("LI")).forEach(el=>
+            {
+                el.style.maxWidth = "230px";
+                el.style.display = "inline-grid";
+                new_anime_list.appendChild(el);
+            }
+        );
+    }
+}
+
+// Replace iframs
+let video_iframes = Array.from(wrapper.getElementsByTagName("IFRAME"));
+// If there are video iframes in the actual page
 if (video_iframes.length){
     let video_sources = document.createElement("p");
-    let video_iframe = Array.from(iframes)[0];
     let new_ref = document.createElement("a");
 
     new_ref.innerText = "Video Source\n";
-    new_ref.href = video_iframe.src;
+    new_ref.href = video_iframes[0].src;
     new_ref.style = "background-color: green; color: white;";
 
-    video_iframe.width = "100%";
-    video_iframe.height = "600px";
+    video_iframes[0].width = "100%";
+    video_iframes[0].height = "600px";
 
     video_sources.appendChild(new_ref);
-    video_sources.appendChild(video_iframe);
+    video_sources.appendChild(video_iframes[0]);
     let capitop = wrapper.getElementsByClassName("CapiTop")[0];
     capitop.appendChild(video_sources);
     capitop.classList.remove("CapiTop");
 }
 
-console.log("extra");
+console.log("extra cleaning");
 Array.from(wrapper.getElementsByTagName("A")).filter(el => String(el.getAttribute("href")).includes("https")).forEach(
     element => element.remove()
 );
