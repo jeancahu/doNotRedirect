@@ -8,8 +8,16 @@
 
     "content_scripts": [
         {
-            "matches": ["*://*.animeflv.net/*"],
-            "js": ["main.js"]
+            "matches": ["*://*.animeflv.net/"],
+            "js": ["common.js", "main.js"]
+        },
+        {
+            "matches": ["*://*.animeflv.net/ver/*"],
+            "js": ["common.js", "ver.js"]
+        },
+        {
+            "matches": ["*://*.animeflv.net/anime/*"],
+            "js": ["common.js", "anime.js"]
         }
     ]
 }
